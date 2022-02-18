@@ -9,6 +9,8 @@ import Physics
 import Hosts
 
 import sys
+import numpy as np
+
 
 class ControlPanel(QtWidgets.QWidget):
     def __init__(self, q_timer, app, view, physics):
