@@ -2,4 +2,4 @@
 
 class Host:
     def __init__(self):
-        test =2
+        test = 2
