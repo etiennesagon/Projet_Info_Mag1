@@ -29,5 +29,31 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.setZValue(-1)
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
+        self.hosts = []
+    
+    def add_host(self, x, y, a, v):
+        boid = Host(x, y, a, v)
+        self.hosts.append(boid)
+        self.scene.addItem(boid)
 
-        #test etienne !!!!
+    def add_host_rnd(self, r=Globals.boidsLength):
+        # random values of x, y, rotation, and velocity
+        a = random.uniform(-self.extent, self.extent)
+        b = random.uniform(-self.extent, self.extent)
+        a2 = random.uniform(0, 360)
+        color = QtGui.QColor.fromRgbF(random.random(),random.random(),random.random())
+        health = random.random()
+        infected = False
+        self.add_host(color, health, infected, a, b, a2)
+
+    def remove_host(self):
+        last = self.hosts[-1]
+        self.scene.removeItem(last)
+        del self.hosts[-1]
+    
+    def step(self):
+        for a in self.boids:
+            a.move()
+            # a.detection()
+            # a.repro()
+            # a.infection()
