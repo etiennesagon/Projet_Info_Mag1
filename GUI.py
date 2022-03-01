@@ -57,7 +57,7 @@ class ControlPanel(QtWidgets.QWidget):
         self.lbl_hosts = QtWidgets.QLabel(self, text="Number of Hosts (max 200): ")
         self.lbl_hosts.move(10, 30)
         self.nb_hosts = QtWidgets.QLineEdit(self)
-        self.nb_hosts.setText(str(Globals.HostsCount))
+        self.nb_hosts.setText(str(Globals.nbHosts))
         self.nb_hosts.move(0.40*Globals.ctrl_size[0], 30)
         self.nb_hosts.resize(45,20)
 
@@ -70,7 +70,7 @@ class ControlPanel(QtWidgets.QWidget):
         self._q_timer.start(1000//50)
 
     def change_values(self):
-        Globals.HostsCount = int(self.nb_boids.text())
+        Globals.nbHosts = int(self.nb_hosts.text())
 
     def start_sim(self):
         Physics.Physics.period = []
