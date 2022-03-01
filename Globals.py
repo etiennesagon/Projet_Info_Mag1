@@ -6,6 +6,8 @@ screen = app_s.primaryScreen()
 height = screen.size().height()
 width = screen.size().width() # monitor size
 
+hostsLength = 30
+
 ctrl_size = (500,height-150) # panel control size
 
 environmentSize = 850
