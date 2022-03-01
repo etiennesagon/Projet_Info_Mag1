@@ -29,3 +29,5 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.setZValue(-1)
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
+
+        #test etienne !!!!
