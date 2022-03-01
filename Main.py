@@ -6,7 +6,6 @@ from PyQt5.QtCore import Qt
 import Globals
 import Misc
 import Physics
-import Hosts
 import GUI
 
 import random
@@ -16,8 +15,8 @@ app = QtWidgets.QApplication([])
 physics = Physics.Physics()
 view = Misc.AutoscaledGraphicsView(physics.scene)
 q_timer = QtCore.QTimer()
-"""q_timer = QtCore.QTimer()
-q_timer.timeout.connect(physics.step)"""
+q_timer = QtCore.QTimer()
+q_timer.timeout.connect(physics.step)
 view.resize(Globals.width-Globals.ctrl_size[0], Globals.ctrl_size[1])
 view.move(Globals.ctrl_size[0], 0)
 

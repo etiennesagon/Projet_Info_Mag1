@@ -1,7 +1,9 @@
 import Globals
 import math
 import random
-from Physics import Physics
+import Physics
+import PyQt5.QtWidgets as QtWidgets
+import PyQt5.QtCore as QtCore
 
 
 class Host(QtWidgets.QGraphicsItem):
@@ -22,16 +24,17 @@ class Host(QtWidgets.QGraphicsItem):
         a = self.rotation()
         p = Physics.t(self.pos())
         x, y = p
-        a_ = (a + random.uniform(-5, 5))%360 # modifiy the slightly the rotation at each move to behave like a fish
-        #self.setRotation(a_)
         a2 = math.pi*a/180
         xtemp = x + math.cos(a2) # multiply by the velocity to be faster
         ytemp =  y + math.sin(a2)
         verif_x, verif_y = self.bounce(xtemp, ytemp) # toroidal
         self.setPos(verif_x, verif_y)
+        a_ = (a + random.uniform(-5, 5))%360 
+        self.setRotation(a_)
 
-    def paint(self, painter, option, widget=None):
-        painter.drawRect(Host.bounds) 
+    def paint(self, painter, option, widget=None): 
+        painter.setPen(self.color)
+        painter.drawRect(Host.bounds)
     
     def bounce(self, x, y):
         size = Globals.environmentSize # 200

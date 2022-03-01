@@ -62,7 +62,6 @@ class ControlPanel(QtWidgets.QWidget):
         self.nb_hosts.resize(45,20)
 
 
-
     def pause(self):
         self._q_timer.stop()
 
@@ -73,17 +72,10 @@ class ControlPanel(QtWidgets.QWidget):
         Globals.nbHosts = int(self.nb_hosts.text())
 
     def start_sim(self):
-        Physics.Physics.period = []
-        Hosts.Hosts.i = 0
-        Physics.Physics.avg_vel = []
-        while len(self._physics.boids) > 0: # clear all previous boids before starting a new sim
-            self._physics.remove_boid()
-        while len(self._physics.sharks)>0: 
-            self._physics.remove_shark()
-        for _ in range(Globals.boidsCount):
-            self._physics.add_boid_rnd()
-        for _ in range(Globals.sharksCount):
-            self._physics.add_shark_rnd()
+        while len(self._physics.hosts) > 0: # clear all previous hosts before starting a new sim
+            self._physics.remove_host()
+        for _ in range(Globals.nbHosts):
+            self._physics.add_host_rnd()
 
         self._q_timer.start(1000//25)
         self._view.show()

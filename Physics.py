@@ -1,6 +1,4 @@
 # Copyright Killian Steunou
-import Hosts
-
 import math
 import random
 import numpy as np
@@ -13,6 +11,7 @@ from PyQt5.QtCore import Qt
 from typing import Tuple
 
 import Globals
+from Hosts import Host
 
 Point = Tuple[float, float]
 
@@ -30,13 +29,18 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
         self.hosts = []
-    
-    def add_host(self, x, y, a, v):
-        boid = Host(x, y, a, v)
-        self.hosts.append(boid)
-        self.scene.addItem(boid)
 
-    def add_host_rnd(self, r=Globals.boidsLength):
+        self.scene.addItem(self)
+        al = .5 * Host.length
+        self.scene.setSceneRect(Physics.bounds.adjusted(-al, -al, al, al))
+        self.scene.setBackgroundBrush(QtGui.QColor(0,30,75))
+    
+    def add_host(self, c, h, inf, x, y, a):
+        host = Host(c, h, inf, x, y, a)
+        self.hosts.append(host)
+        self.scene.addItem(host)
+
+    def add_host_rnd(self):
         # random values of x, y, rotation, and velocity
         a = random.uniform(-self.extent, self.extent)
         b = random.uniform(-self.extent, self.extent)
@@ -51,9 +55,14 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene.removeItem(last)
         del self.hosts[-1]
     
+    def __in_bounds(self, i, j):
+        return 0 <= i < self.size and 0 <= j < self.size
+
     def step(self):
-        for a in self.boids:
+        for a in self.hosts:
             a.move()
             # a.detection()
             # a.repro()
             # a.infection()
+    
+        
