@@ -57,3 +57,19 @@ class Host(QtWidgets.QGraphicsItem):
     
     def boundingRect(self):
         return Host.bounds
+    
+    def distance(self, B):
+        x1, y1 = Physics.t(self.pos())
+        x2, y2 = Physics.t(B.pos())
+        return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
+    def detection(self, physics) :
+        self.neighbors = []
+        p1 = Physics.t(self.pos())
+        x1, y1 = p1
+        for host in physics.hosts:
+            if host != self : # you cant be your own neighbor
+                p2 = Physics.t(host.pos())
+                x2, y2 = p2
+                if self.distance(host) ** 2 <= Globals.min_dist ** 2: # if you are in the circle you become a neighbor
+                    self.add_neighbor(host)
