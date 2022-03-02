@@ -5,6 +5,12 @@ class Disease() :
         self.color = color
         self.virulence = virulence
         self.duration = duration
+    
+    def mutation(self):
+        delta = random.uniform(-0.01,0.01)
+
+    def update(self, delta):
+        pass
 
 #test de maladie pour voir si ça marche
 couleur1 = QColor.fromRgbF(0.5, 0.5, 0.5, 1)
