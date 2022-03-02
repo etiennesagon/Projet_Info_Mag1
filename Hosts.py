@@ -19,18 +19,6 @@ class Host(QtWidgets.QGraphicsItem):
         self.setPos(x, y) 
         self.setRotation(a)
         
-    def move2(self):
-        a = self.rotation()
-        p = Physics.t(self.pos())
-        x, y = p
-        a2 = math.pi*a/180
-        xtemp = x + math.cos(a2)
-        ytemp =  y + math.sin(a2)
-        verif_x, verif_y = self.bounce(xtemp, ytemp) # toroidal
-        self.setPos(verif_x, verif_y)
-        a_ = (a + random.uniform(-5, 5))%360 
-        self.setRotation(a_)
-        
     def move(self):
         a = self.rotation()
         p = Physics.t(self.pos())
@@ -69,32 +57,3 @@ class Host(QtWidgets.QGraphicsItem):
     
     def boundingRect(self):
         return Host.bounds
-    
-    def bounce2(self, x, y):
-        size = Globals.environmentSize # 200
-        extent = size/2 # 100
-        # toroidal rules
-        # goes up
-        if y > (extent):
-            if x > (extent): 
-                return x-1, y-1
-            elif x < (-extent):
-                return x+1, y-1
-            else:
-                return x, y-1
-        # goes down
-        elif y < (-extent):
-            if x > (extent):
-                return x-1, y+1
-            elif x < (-extent):
-                return x+1, y+1
-            else:
-                return x, y+1
-        # goes right
-        if x > (extent):
-            return x, y-1
-        # goes left
-        elif x < (-extent):
-            return x, y+1
-
-        return x, y
