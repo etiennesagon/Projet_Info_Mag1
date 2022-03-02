@@ -19,13 +19,12 @@ class Host(QtWidgets.QGraphicsItem):
         self.setPos(x, y) 
         self.setRotation(a)
         
-
     def move(self):
         a = self.rotation()
         p = Physics.t(self.pos())
         x, y = p
         a2 = math.pi*a/180
-        xtemp = x + math.cos(a2) # multiply by the velocity to be faster
+        xtemp = x + math.cos(a2)
         ytemp =  y + math.sin(a2)
         verif_x, verif_y = self.bounce(xtemp, ytemp) # toroidal
         self.setPos(verif_x, verif_y)
@@ -35,6 +34,9 @@ class Host(QtWidgets.QGraphicsItem):
     def paint(self, painter, option, widget=None): 
         painter.setPen(self.color)
         painter.drawRect(Host.bounds)
+    
+    def boundingRect(self):
+        return Host.bounds
     
     def bounce(self, x, y):
         size = Globals.environmentSize # 200
