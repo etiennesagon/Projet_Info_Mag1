@@ -19,7 +19,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.setPos(x, y) 
         self.setRotation(a)
         
-    def move(self):
+    def move2(self):
         a = self.rotation()
         p = Physics.t(self.pos())
         x, y = p
@@ -30,6 +30,38 @@ class Host(QtWidgets.QGraphicsItem):
         self.setPos(verif_x, verif_y)
         a_ = (a + random.uniform(-5, 5))%360 
         self.setRotation(a_)
+        
+    def move(self):
+        a = self.rotation()
+        p = Physics.t(self.pos())
+        x, y = p
+        a2 = math.pi*a/180
+        xtemp = x + math.cos(a2)
+        ytemp =  y + math.sin(a2)
+        if self.inside(xtemp, ytemp):
+            self.setPos(xtemp, ytemp)
+            self.setRotation((a + random.uniform(-5, 5))%360)
+        else:
+            a_fin = (a + random.uniform(-5, 5)+90)%360
+            self.setRotation(a_fin)
+            x_fin = x + math.cos(a_fin)
+            y_fin = y + math.sin(a_fin)
+            self.setPos(x_fin, y_fin)
+
+    def inside(self, x, y):
+        size = Globals.environmentSize # 200
+        extent = size/2
+
+        if y > (extent):
+            return False
+        elif x > (extent):
+            return False
+        elif y < (-extent):
+            return False
+        elif x < (-extent):
+            return False
+        else:
+            return True
 
     def paint(self, painter, option, widget=None): 
         painter.setPen(self.color)
@@ -38,7 +70,7 @@ class Host(QtWidgets.QGraphicsItem):
     def boundingRect(self):
         return Host.bounds
     
-    def bounce(self, x, y):
+    def bounce2(self, x, y):
         size = Globals.environmentSize # 200
         extent = size/2 # 100
         # toroidal rules
