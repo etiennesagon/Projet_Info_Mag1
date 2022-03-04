@@ -2,6 +2,7 @@
 import math
 import random
 import numpy as np
+import pandas as pd
 
 import PyQt5.QtCore as QtCore
 import PyQt5.QtWidgets as QtWidgets
@@ -22,6 +23,10 @@ class Physics(QtWidgets.QGraphicsRectItem):
     size = Globals.environmentSize
     extent = size / 2
     bounds = QtCore.QRectF(-extent, -extent, size, size)
+    var_stats_hosts = {'nb_alive':[], 
+                 'nb_infected':[], 
+                 'nb_healthy':[] 
+                 }
 
     def __init__(self):
         super().__init__(self.bounds)
@@ -29,7 +34,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
         self.hosts = []
-        self.nb_infected = 0
+        self.stats_hosts = Physics.var_stats_hosts
 
         self.scene.addItem(self)
         al = .5 * Host.length
@@ -62,9 +67,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
     def step(self):
         for a in self.hosts:
             a.move()
-        self.nb_infected = sum([1 for a in self.hosts if a.infected==True])
-            # a.detection()
+            a.detection(self)
+        self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
             # a.repro()
             # a.infection()
-    
-        

@@ -18,6 +18,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.infected = infected
         self.setPos(x, y) 
         self.setRotation(a)
+        self.neighbors = []
         
     def move(self):
         a = self.rotation()
@@ -64,7 +65,6 @@ class Host(QtWidgets.QGraphicsItem):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     def detection(self, physics) :
-        self.neighbors = []
         p1 = Physics.t(self.pos())
         x1, y1 = p1
         for host in physics.hosts:
@@ -72,4 +72,4 @@ class Host(QtWidgets.QGraphicsItem):
                 p2 = Physics.t(host.pos())
                 x2, y2 = p2
                 if self.distance(host) ** 2 <= Globals.min_dist ** 2: # if you are in the circle you become a neighbor
-                    self.add_neighbor(host)
+                    self.neighbors.append(host)
