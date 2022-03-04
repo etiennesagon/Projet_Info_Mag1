@@ -29,6 +29,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
         self.hosts = []
+        self.nb_infected = 0
 
         self.scene.addItem(self)
         al = .5 * Host.length
@@ -61,6 +62,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
     def step(self):
         for a in self.hosts:
             a.move()
+        self.nb_infected = sum([1 for a in self.hosts if a.infected==True])
             # a.detection()
             # a.repro()
             # a.infection()
