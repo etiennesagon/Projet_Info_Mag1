@@ -54,7 +54,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         color = QtGui.QColor.fromRgbF(random.random(),random.random(),random.random())
         health = random.random()
         infected = False
-        self.add_host(color, health, infected, a, b, a2)
+        self.add_host(color, health, infected, a, b, a2, 0)
 
     def remove_host(self):
         last = self.hosts[-1]
@@ -68,6 +68,9 @@ class Physics(QtWidgets.QGraphicsRectItem):
         for a in self.hosts:
             a.move()
             a.detection(self)
+            a.reproduction(self)
+            if a.timer > 0:
+                a.timer -= 1
         self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
         self.stats_hosts['nb_alive'].append(len(self.hosts))
         self.stats_hosts['nb_healthy'].append(self.stats_hosts['nb_alive'][-1] - self.stats_hosts['nb_infected'][-1])
