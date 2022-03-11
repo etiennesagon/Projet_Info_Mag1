@@ -12,6 +12,7 @@ import sys
 import numpy as np
 
 
+
 class ControlPanel(QtWidgets.QWidget):
     def __init__(self, q_timer, app, view, physics):
         super(ControlPanel, self).__init__()
@@ -60,6 +61,9 @@ class ControlPanel(QtWidgets.QWidget):
         self.nb_hosts.setText(str(Globals.nbHosts))
         self.nb_hosts.move(0.40*Globals.ctrl_size[0], 30)
         self.nb_hosts.resize(45,20)
+        with open('info_sim.txt', 'r') as f:
+            nb_sim_txt = f.readlines()[0]
+        self.nb_sim = int(nb_sim_txt.split('=')[1].strip())
 
 
     def pause(self):
@@ -76,6 +80,8 @@ class ControlPanel(QtWidgets.QWidget):
             self._physics.remove_host()
         for _ in range(Globals.nbHosts):
             self._physics.add_host_rnd()
-
+        self.nb_sim += 1
+        with open('info_sim.txt', 'w') as f:
+            f.write(f'nb_sim = {self.nb_sim}')
         self._q_timer.start(1000//25)
         self._view.show()
