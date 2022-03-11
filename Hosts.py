@@ -4,6 +4,7 @@ import random
 import Physics
 import PyQt5.QtWidgets as QtWidgets
 import PyQt5.QtCore as QtCore
+import PyQt5.QtGui as QtGui
 
 def toss(x, y):
      flip = random.randint(0, 1)
@@ -17,7 +18,7 @@ class Host(QtWidgets.QGraphicsItem):
     width = 2*length/9
     bounds = QtCore.QRectF(-.5*length, -.5*width, length, width)
     
-        def __init__(self, color, health, infected, x, y, a, timer):
+    def __init__(self, color, health, infected, x, y, a, timer):
         super().__init__()
         self.color = color
         self.health = health

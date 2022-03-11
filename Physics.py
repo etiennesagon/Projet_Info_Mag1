@@ -41,8 +41,8 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene.setSceneRect(Physics.bounds.adjusted(-al, -al, al, al))
         self.scene.setBackgroundBrush(QtGui.QColor(0,30,75))
     
-    def add_host(self, c, h, inf, x, y, a):
-        host = Host(c, h, inf, x, y, a)
+    def add_host(self, c, h, inf, x, y, a, timer):
+        host = Host(c, h, inf, x, y, a, timer)
         self.hosts.append(host)
         self.scene.addItem(host)
 
