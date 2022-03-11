@@ -18,7 +18,7 @@ class Host(QtWidgets.QGraphicsItem):
     width = 2*length/9
     bounds = QtCore.QRectF(-.5*length, -.5*width, length, width)
     
-    def __init__(self, color, health, infected, x, y, a, timer):
+    def __init__(self, color, health, infected, x, y, a, timer, ID):
         super().__init__()
         self.color = color
         self.health = health
@@ -27,6 +27,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.setRotation(a)
         self.neighbors = []
         self.timer = timer
+        self.ID = ID
         
     def move(self):
         a = self.rotation()
@@ -73,6 +74,7 @@ class Host(QtWidgets.QGraphicsItem):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     def detection(self, physics) :
+        self.neighbors = []
         p1 = Physics.t(self.pos())
         x1, y1 = p1
         for host in physics.hosts:
@@ -85,17 +87,25 @@ class Host(QtWidgets.QGraphicsItem):
     def reproduction(self,physics):
         if len(physics.hosts) <= Globals.MaxnbHosts and len(self.neighbors) > 0 and self.timer == 0:
             partner = random.choice(self.neighbors)
-            print("hello")
             proba_repro = 0.3
-            print("helloA")
             P = random.uniform(0, 1)
-            print("hello1")
             if P < proba_repro:
-                print("hello2")
                 x_partner, y_partner = Physics.t(partner.pos())
                 x_self, y_self = Physics.t(self.pos())
                 x_mean = (x_partner + x_self)/2
                 y_mean = (y_partner + y_self) / 2
-                physics.add_host(QtGui.QColor.fromRgbF(1, 1, 1), 1, False, x_mean, y_mean, random.uniform(0, 360), 500)
+                physics.add_host(QtGui.QColor.fromRgbF(toss(self.color.redF(), partner.color.redF()),
+                                                       toss(self.color.greenF(), partner.color.greenF()),
+                                                       toss(self.color.blueF(),partner.color.blueF())),
+                                                        1,
+                                                        False,
+                                                        x_mean, 
+                                                        y_mean, 
+                                                        random.uniform(0, 360), 500, 
+                                                        len(physics.hosts) + 1)
+               
                 self.timer = 100
+                for i, guy in enumerate(physics.hosts):
+                    if guy.ID == partner.ID:
+                        physics.hosts[i].timer = 100
                 #partner.timer = 100

@@ -80,8 +80,8 @@ class ControlPanel(QtWidgets.QWidget):
     def start_sim(self):
         while len(self._physics.hosts) > 0: # clear all previous hosts before starting a new sim
             self._physics.remove_host()
-        for _ in range(Globals.nbHosts):
-            self._physics.add_host_rnd()
+        for ID in range(Globals.nbHosts):
+            self._physics.add_host_rnd(ID)
         self.nb_sim += 1
         with open('info_sim.txt', 'w') as f:
             f.write(f'nb_sim = {self.nb_sim}')

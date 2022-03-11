@@ -41,12 +41,12 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene.setSceneRect(Physics.bounds.adjusted(-al, -al, al, al))
         self.scene.setBackgroundBrush(QtGui.QColor(0,30,75))
     
-    def add_host(self, c, h, inf, x, y, a, timer):
-        host = Host(c, h, inf, x, y, a, timer)
+    def add_host(self, c, h, inf, x, y, a, timer, ID):
+        host = Host(c, h, inf, x, y, a, timer, ID)
         self.hosts.append(host)
         self.scene.addItem(host)
 
-    def add_host_rnd(self):
+    def add_host_rnd(self, ID):
         # random values of x, y, rotation, and velocity
         a = random.uniform(-self.extent, self.extent)
         b = random.uniform(-self.extent, self.extent)
@@ -54,7 +54,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         color = QtGui.QColor.fromRgbF(random.random(),random.random(),random.random())
         health = random.random()
         infected = False
-        self.add_host(color, health, infected, a, b, a2, 0)
+        self.add_host(color, health, infected, a, b, a2, 0, ID)
 
     def remove_host(self):
         last = self.hosts[-1]
