@@ -5,6 +5,12 @@ import Physics
 import PyQt5.QtWidgets as QtWidgets
 import PyQt5.QtCore as QtCore
 
+def toss(x, y):
+    flip = random.randint(0, 1)
+    if flip == 0:
+        return x
+    else:
+        return y
 
 class Host(QtWidgets.QGraphicsItem):
     length = Globals.hostsLength
