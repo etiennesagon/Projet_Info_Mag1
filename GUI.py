@@ -30,36 +30,36 @@ class ControlPanel(QtWidgets.QWidget):
         self.btn_exit.setText('Exit')
         self.btn_exit.setObjectName('exit')
         self.btn_exit.setStyleSheet("background-color: red")
-        self.btn_exit.move(0.8*Globals.ctrl_size[0],0.95*Globals.ctrl_size[1])
+        self.btn_exit.move(int(0.8*Globals.ctrl_size[0]),int(0.95*Globals.ctrl_size[1]))
         self.btn_exit.clicked.connect(self._app.exit)
 
         self.btn_start = QtWidgets.QPushButton(self)
         self.btn_start.setText('Start New Simulation')
         self.btn_start.setObjectName("start")
         self.btn_start.resize(200,100)
-        self.btn_start.move(0.5*Globals.ctrl_size[0]-100,0.65*Globals.ctrl_size[1])
+        self.btn_start.move(int(0.5*Globals.ctrl_size[0]-100),int(0.65*Globals.ctrl_size[1]))
         self.btn_start.clicked.connect(self.start_sim)
 
         self.btn_exp = QtWidgets.QPushButton(self)
         self.btn_exp.setText('Export Data')
         self.btn_exp.setStyleSheet("background-color: green")
         self.btn_exp.resize(200,100)
-        self.btn_exp.move(0.5*Globals.ctrl_size[0]-100,0.85*Globals.ctrl_size[1])
+        self.btn_exp.move(int(0.5*Globals.ctrl_size[0]-100),int(0.85*Globals.ctrl_size[1]))
         self.btn_exp.clicked.connect(self.exp_data)
 
         self.btn_play = QtWidgets.QPushButton(self)
         self.btn_play.setText("Play")
-        self.btn_play.move(0.5*Globals.ctrl_size[0]-75, 0.78*Globals.ctrl_size[1])
+        self.btn_play.move(int(0.5*Globals.ctrl_size[0]-75), int(0.78*Globals.ctrl_size[1]))
         self.btn_play.clicked.connect(self.play)
 
         self.btn_pause = QtWidgets.QPushButton(self)
         self.btn_pause.setText("Pause")
-        self.btn_pause.move(0.5*Globals.ctrl_size[0], 0.78*Globals.ctrl_size[1])
+        self.btn_pause.move(int(0.5*Globals.ctrl_size[0]), int(0.78*Globals.ctrl_size[1]))
         self.btn_pause.clicked.connect(self.pause)
 
         self.btn_val = QtWidgets.QPushButton(self)
         self.btn_val.setText('Confirm')
-        self.btn_val.move(0.75*Globals.ctrl_size[0],70)
+        self.btn_val.move(int(0.75*Globals.ctrl_size[0]),70)
         self.btn_val.resize(100,50)
         self.btn_val.clicked.connect(self.change_values)
 
@@ -67,7 +67,7 @@ class ControlPanel(QtWidgets.QWidget):
         self.lbl_hosts.move(10, 30)
         self.nb_hosts = QtWidgets.QLineEdit(self)
         self.nb_hosts.setText(str(Globals.nbHosts))
-        self.nb_hosts.move(0.40*Globals.ctrl_size[0], 30)
+        self.nb_hosts.move(int(0.40*Globals.ctrl_size[0]), 30)
         self.nb_hosts.resize(45,20)
 
         with open('info_sim.txt', 'r') as f:
