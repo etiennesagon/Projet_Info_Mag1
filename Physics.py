@@ -71,8 +71,10 @@ class Physics(QtWidgets.QGraphicsRectItem):
             a.reproduction(self)
             if a.timer > 0:
                 a.timer -= 1
+            # TODO:
+            # a.infection() 
+        # Update stats:
         self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
         self.stats_hosts['nb_alive'].append(len(self.hosts))
         self.stats_hosts['nb_healthy'].append(self.stats_hosts['nb_alive'][-1] - self.stats_hosts['nb_infected'][-1])
-            # a.repro()
-            # a.infection()
+            

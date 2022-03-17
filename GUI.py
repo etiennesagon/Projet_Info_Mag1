@@ -11,6 +11,7 @@ import Hosts
 import sys
 import os
 import numpy as np
+import pandas as pd
 
 
 
@@ -105,3 +106,4 @@ class ControlPanel(QtWidgets.QWidget):
         with open(f'Simulation_{self.nb_sim}/Config_sim{self.nb_sim}.txt', 'w') as f:
             text = f'nbHosts = {int(self.nb_hosts.text())}'
             f.write(text)
+        pd.DataFrame.from_dict(self._physics.stats_hosts).to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')

@@ -85,7 +85,7 @@ class Host(QtWidgets.QGraphicsItem):
                     self.neighbors.append(host)
                     
     def reproduction(self,physics):
-        if len(physics.hosts) <= Globals.MaxnbHosts and len(self.neighbors) > 0 and self.timer == 0:
+        if len(physics.hosts) < Globals.MaxnbHosts and len(self.neighbors) > 0 and self.timer == 0:
             partner = random.choice(self.neighbors)
             proba_repro = 0.3
             P = random.uniform(0, 1)
@@ -109,3 +109,6 @@ class Host(QtWidgets.QGraphicsItem):
                     if guy.ID == partner.ID:
                         physics.hosts[i].timer = 100
                 #partner.timer = 100
+
+    def infection(self, physics):
+        pass
