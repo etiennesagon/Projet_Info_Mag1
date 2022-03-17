@@ -12,7 +12,7 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 
 class ControlPanel(QtWidgets.QWidget):
@@ -38,24 +38,24 @@ class ControlPanel(QtWidgets.QWidget):
         self.btn_start.setText('Start New Simulation')
         self.btn_start.setObjectName("start")
         self.btn_start.resize(200,100)
-        self.btn_start.move(int(0.5*Globals.ctrl_size[0]-100),int(0.65*Globals.ctrl_size[1]))
+        self.btn_start.move(int(0.5*Globals.ctrl_size[0]-100),int(0.25*Globals.ctrl_size[1]))
         self.btn_start.clicked.connect(self.start_sim)
 
         self.btn_exp = QtWidgets.QPushButton(self)
         self.btn_exp.setText('Export Data')
         self.btn_exp.setStyleSheet("background-color: green")
         self.btn_exp.resize(200,100)
-        self.btn_exp.move(int(0.5*Globals.ctrl_size[0]-100),int(0.85*Globals.ctrl_size[1]))
+        self.btn_exp.move(int(0.5*Globals.ctrl_size[0]-100),int(0.45*Globals.ctrl_size[1]))
         self.btn_exp.clicked.connect(self.exp_data)
 
         self.btn_play = QtWidgets.QPushButton(self)
         self.btn_play.setText("Play")
-        self.btn_play.move(int(0.5*Globals.ctrl_size[0]-75), int(0.78*Globals.ctrl_size[1]))
+        self.btn_play.move(int(0.5*Globals.ctrl_size[0]-75), int(0.38*Globals.ctrl_size[1]))
         self.btn_play.clicked.connect(self.play)
 
         self.btn_pause = QtWidgets.QPushButton(self)
         self.btn_pause.setText("Pause")
-        self.btn_pause.move(int(0.5*Globals.ctrl_size[0]), int(0.78*Globals.ctrl_size[1]))
+        self.btn_pause.move(int(0.5*Globals.ctrl_size[0]), int(0.38*Globals.ctrl_size[1]))
         self.btn_pause.clicked.connect(self.pause)
 
         self.btn_val = QtWidgets.QPushButton(self)
@@ -63,6 +63,12 @@ class ControlPanel(QtWidgets.QWidget):
         self.btn_val.move(int(0.75*Globals.ctrl_size[0]),70)
         self.btn_val.resize(100,50)
         self.btn_val.clicked.connect(self.change_values)
+
+        self.btn_plot = QtWidgets.QPushButton(self)
+        self.btn_plot.setText('Plot Data')
+        self.btn_plot.resize(200,100)
+        self.btn_plot.move(int(0.5*Globals.ctrl_size[0]-100),int(0.65*Globals.ctrl_size[1]))
+        self.btn_plot.clicked.connect(self.plot_data)
 
         self.lbl_hosts = QtWidgets.QLabel(self, text="Number of Hosts (max 200): ")
         self.lbl_hosts.move(10, 30)
@@ -107,3 +113,6 @@ class ControlPanel(QtWidgets.QWidget):
             text = f'nbHosts = {int(self.nb_hosts.text())}'
             f.write(text)
         pd.DataFrame.from_dict(self._physics.stats_hosts).to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
+
+    def plot_data(self):
+        pass
