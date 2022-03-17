@@ -12,8 +12,8 @@ ctrl_size = (500,height-150) # panel control size
 
 environmentSize = 850
 
-nbHosts = 55
+nbHosts = 15
 
-MaxnbHosts = nbHosts*1.5  # the population cannot exceed 150% of the initial population
+MaxnbHosts = 150 # the population cannot exceed 150% of the initial population !! too much !!
 
 min_dist = 10

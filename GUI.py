@@ -65,7 +65,7 @@ class ControlPanel(QtWidgets.QWidget):
         self.btn_val.clicked.connect(self.change_values)
 
         self.btn_plot = QtWidgets.QPushButton(self)
-        self.btn_plot.setText('Plot Data')
+        self.btn_plot.setText('Plot Data\n(export first)')
         self.btn_plot.resize(200,100)
         self.btn_plot.move(int(0.5*Globals.ctrl_size[0]-100),int(0.65*Globals.ctrl_size[1]))
         self.btn_plot.clicked.connect(self.plot_data)
@@ -76,6 +76,8 @@ class ControlPanel(QtWidgets.QWidget):
         self.nb_hosts.setText(str(Globals.nbHosts))
         self.nb_hosts.move(int(0.40*Globals.ctrl_size[0]), 30)
         self.nb_hosts.resize(45,20)
+
+        self.data = pd.DataFrame()
 
         with open('info_sim.txt', 'r') as f:
             nb_sim_txt = f.readlines()[0]
@@ -112,7 +114,13 @@ class ControlPanel(QtWidgets.QWidget):
         with open(f'Simulation_{self.nb_sim}/Config_sim{self.nb_sim}.txt', 'w') as f:
             text = f'nbHosts = {int(self.nb_hosts.text())}'
             f.write(text)
-        pd.DataFrame.from_dict(self._physics.stats_hosts).to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
+        self.data = pd.DataFrame.from_dict(self._physics.stats_hosts)
+        self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
 
     def plot_data(self):
-        pass
+        plt.figure(figsize=(12,6))
+        plt.scatter(self.data.index, self.data['nb_alive'])
+        plt.xlabel('Time')
+        plt.ylabel('Number of hosts')
+        plt.title('Evolution of the system')
+        plt.show()
