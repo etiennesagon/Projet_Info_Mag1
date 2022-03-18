@@ -77,7 +77,7 @@ class ControlPanel(QtWidgets.QWidget):
         self.nb_hosts.move(int(0.40*Globals.ctrl_size[0]), 30)
         self.nb_hosts.resize(45,20)
 
-        self.data = pd.DataFrame()
+        self.data = None
 
         with open('info_sim.txt', 'r') as f:
             nb_sim_txt = f.readlines()[0]
@@ -95,6 +95,11 @@ class ControlPanel(QtWidgets.QWidget):
         Globals.nbHosts = int(self.nb_hosts.text())
 
     def start_sim(self):
+        self._physics.stats_hosts = {
+            'nb_alive':[], 
+            'nb_infected':[], 
+            'nb_healthy':[] 
+            }
         while len(self._physics.hosts) > 0: # clear all previous hosts before starting a new sim
             self._physics.remove_host()
         for ID in range(Globals.nbHosts):
@@ -118,9 +123,10 @@ class ControlPanel(QtWidgets.QWidget):
         self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
 
     def plot_data(self):
-        plt.figure(figsize=(12,6))
-        plt.scatter(self.data.index, self.data['nb_alive'])
-        plt.xlabel('Time')
-        plt.ylabel('Number of hosts')
-        plt.title('Evolution of the system')
-        plt.show()
+        if self.data is not None:
+            plt.figure(figsize=(12,6))
+            plt.plot(self.data.index, self.data['nb_alive'])
+            plt.xlabel('Time')
+            plt.ylabel('Number of hosts')
+            plt.title('Evolution of the system')
+            plt.show()
