@@ -28,6 +28,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.neighbors = []
         self.timer = timer
         self.ID = ID
+        self.disease = None
         
     def move(self):
         a = self.rotation()
@@ -62,8 +63,13 @@ class Host(QtWidgets.QGraphicsItem):
             return True
 
     def paint(self, painter, option, widget=None): 
-        painter.setPen(self.color)
-        painter.drawRect(Host.bounds)
+        
+        if not self.infected:
+            painter.setPen(self.color)
+            painter.drawRect(Host.bounds)
+        if self.infected:
+            painter.setPen(Qcolor.black)
+            painter.drawRect(Host.bounds)
     
     def boundingRect(self):
         return Host.bounds
@@ -84,7 +90,7 @@ class Host(QtWidgets.QGraphicsItem):
                 if self.distance(host) ** 2 <= Globals.min_dist ** 2: # if you are in the circle you become a neighbor
                     self.neighbors.append(host)
                     
-        def reproduction(self,physics):
+    def reproduction(self,physics):
         if len(physics.hosts) < Globals.MaxnbHosts and len(self.neighbors) > 0 and self.timer == 0:
             partner = random.choice(self.neighbors)
             proba_repro = 0.3
@@ -112,5 +118,35 @@ class Host(QtWidgets.QGraphicsItem):
 
                 return baby
 
+
+    def susceptibility(self, disease):
+        red1 = self.color.redF()
+        green1 = self.color.greenF()
+        blue1 = self.color.blueF()
+
+        red2 = disease.color.redF()
+        green2 = disease.color.greenF()
+        blue2 = disease.color.blueF()
+
+        dist = math.sqrt((red1-red2)**2 + (green1-green2)**2 + (blue1-blue2)**2)
+        return (1-dist)/math.sqrt(3) # normalization (divide by dist max)
+
+#TODO:
+# si infecté, la health du host diminue de 0.01 * la virulence de la maladie 
+# (pour durer au minimum 100 pas de temps) 
+
     def infection(self, physics):
-        pass
+
+        if self.infected and len(self.neighbors)>0:
+            for neighbor in self.neighbors:
+                if not neighbor.infected:
+                    p = random.uniform(0,1)
+                    if p < neighbor.susceptibility(self.disease)*self.disease.virulence:
+                        ID = neighbor.ID
+                        for i, guy in enumerate(physics.hosts):
+                            if guy.ID == partner.ID:
+                                physics.hosts[i].infected = True
+                                physics.hosts[i].disease = self.disease
+
+
+

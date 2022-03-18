@@ -13,6 +13,7 @@ from typing import Tuple
 
 import Globals
 from Hosts import Host
+from Disease import Disease
 
 Point = Tuple[float, float]
 
@@ -56,6 +57,24 @@ class Physics(QtWidgets.QGraphicsRectItem):
         infected = False
         self.add_host(color, health, infected, a, b, a2, 0, ID)
 
+    def create_disease_rnd(self, ID):
+        r = random.uniform(0,1)
+        g = random.uniform(0,1)
+        b = random.uniform(0,1)
+        virulence = Globals.virulence
+        duration = random.randint(100,1000)
+        return Disease(QtGui.QColor.fromRgbF(r,g,b), virulence, duration, ID)
+    
+    def make_host_sick(self, n):
+        list_h = self.hosts
+        for i in range(n):
+            ID = random.choice(list_h).ID
+            for i, guy in enumerate(self.hosts):
+                    if guy.ID == ID:
+                        self.hosts[i].infected == True
+                        self.hosts[i].disease = self.create_disease_rnd(guy.ID)
+                        list_h.remove(self.hosts[i])
+
     def remove_host(self):
         last = self.hosts[-1]
         self.scene.removeItem(last)
@@ -64,18 +83,17 @@ class Physics(QtWidgets.QGraphicsRectItem):
     def __in_bounds(self, i, j):
         return 0 <= i < self.size and 0 <= j < self.size
 
-        def step(self):
+    def step(self):
         baby_list =[]
         for a in self.hosts:
             a.move()
             a.detection(self)
-
+            a.infection(self)
             baby_list.append(a.reproduction(self))
-
+            # assert a.infected == False
             if a.timer > 0:
                 a.timer -= 1
-            # TODO:
-            # a.infection()
+
         for i in baby_list :
             if i is not None :
                 self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])

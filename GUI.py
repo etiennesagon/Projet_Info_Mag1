@@ -84,6 +84,13 @@ class ControlPanel(QtWidgets.QWidget):
         self.value_proba.move(int(0.40*Globals.ctrl_size[0]), 75)
         self.value_proba.resize(45,20)
 
+        self.lbl_viru = QtWidgets.QLabel(self, text="Virulence rate\n(between 0 and 1): ")
+        self.lbl_viru.move(10, 90)
+        self.value_viru = QtWidgets.QLineEdit(self)
+        self.value_viru.setText(str(Globals.virulence))
+        self.value_viru.move(int(0.40*Globals.ctrl_size[0]), 100)
+        self.value_viru.resize(45,20)
+
         self.data = None
 
         with open('info_sim.txt', 'r') as f:
@@ -100,6 +107,8 @@ class ControlPanel(QtWidgets.QWidget):
 
     def change_values(self):
         Globals.nbHosts = int(self.nb_hosts.text())
+        Globals.proba_repro = float(self.value_proba.text())
+        Globals.virulence = float(self.value_viru.text())
 
     def start_sim(self):
         self._physics.stats_hosts = {
@@ -111,21 +120,23 @@ class ControlPanel(QtWidgets.QWidget):
             self._physics.remove_host()
         for ID in range(Globals.nbHosts):
             self._physics.add_host_rnd(ID)
+        self._physics.make_host_sick(Globals.nb_infect)
         self.nb_sim += 1
         with open('info_sim.txt', 'w') as f:
             f.write(f'nb_sim = {self.nb_sim}')
         
-        self._q_timer.start(1000//25)
-        self._view.show()
-    
-    def exp_data(self):
         try:
             os.makedirs(f'Simulation_{self.nb_sim}') 
         except FileExistsError:
             pass
         with open(f'Simulation_{self.nb_sim}/Config_sim{self.nb_sim}.txt', 'w') as f:
-            text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}'
+            text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}'
             f.write(text)
+
+        self._q_timer.start(1000//25)
+        self._view.show()
+    
+    def exp_data(self):
         self.data = pd.DataFrame.from_dict(self._physics.stats_hosts)
         self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
 

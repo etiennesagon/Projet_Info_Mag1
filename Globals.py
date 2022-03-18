@@ -15,6 +15,9 @@ environmentSize = 850
 nbHosts = 15
 proba_repro = 0.3
 
-MaxnbHosts = 150 # the population cannot exceed 150% of the initial population !! too much !!
+MaxnbHosts = 150 
 
 min_dist = 10
+
+virulence = 0.3
+nb_infect = 1
