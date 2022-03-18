@@ -84,7 +84,7 @@ class Host(QtWidgets.QGraphicsItem):
                 if self.distance(host) ** 2 <= Globals.min_dist ** 2: # if you are in the circle you become a neighbor
                     self.neighbors.append(host)
                     
-    def reproduction(self,physics):
+        def reproduction(self,physics):
         if len(physics.hosts) < Globals.MaxnbHosts and len(self.neighbors) > 0 and self.timer == 0:
             partner = random.choice(self.neighbors)
             proba_repro = 0.3
@@ -94,7 +94,7 @@ class Host(QtWidgets.QGraphicsItem):
                 x_self, y_self = Physics.t(self.pos())
                 x_mean = (x_partner + x_self)/2
                 y_mean = (y_partner + y_self) / 2
-                physics.add_host(QtGui.QColor.fromRgbF(toss(self.color.redF(), partner.color.redF()),
+                baby = (QtGui.QColor.fromRgbF(toss(self.color.redF(), partner.color.redF()),
                                                        toss(self.color.greenF(), partner.color.greenF()),
                                                        toss(self.color.blueF(),partner.color.blueF())),
                                                         1,
@@ -109,6 +109,8 @@ class Host(QtWidgets.QGraphicsItem):
                     if guy.ID == partner.ID:
                         physics.hosts[i].timer = 100
                 #partner.timer = 100
+
+                return baby
 
     def infection(self, physics):
         pass
