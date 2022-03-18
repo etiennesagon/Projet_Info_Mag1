@@ -25,4 +25,3 @@ control_panel = GUI.ControlPanel(q_timer, app, view, physics)
 if __name__ == '__main__':
     control_panel.show()
     app.exec()
-    # add data analysis here (plot...)

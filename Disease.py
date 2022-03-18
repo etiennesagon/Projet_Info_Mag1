@@ -8,19 +8,14 @@ class Disease() :
         self.ID = ID
     
     def mutation(self):
-        delta = random.uniform(-0.01,0.01)
+        delta_list = [random.uniform(-0.01,0.01) for _ in range(5)]
         # mutations are random
-        red = self.color.redF()
-        green = self.color.greenF()
-        blue = self.color.blueF()
+        red = self.color.redF() + delta[0]
+        green = self.color.greenF() + delta[1]
+        blue = self.color.blueF() + delta[2]
+        self.color = QColor.fromRgb(red, green, blue)
+        self.virulence += delta[3]
+        self.duration += delta[4]
 
-        self.color = QColor.fromRgbF(red + delta, green + delta, blue + delta)
-        self.virulence += delta
-        self.duration += delta
-
-# next: 
-#  add a property in class Host to contain the disease
-#  create n diseases in Physics (n given by user) attached to n Hosts ? or random: 
-#   create a function like add_hosts_rnd but to create n hosts infected
 
 
