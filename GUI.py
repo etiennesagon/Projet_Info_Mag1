@@ -77,6 +77,13 @@ class ControlPanel(QtWidgets.QWidget):
         self.nb_hosts.move(int(0.40*Globals.ctrl_size[0]), 30)
         self.nb_hosts.resize(45,20)
 
+        self.lbl_proba = QtWidgets.QLabel(self, text="Probability of reproduction\n(between 0 and 1): ")
+        self.lbl_proba.move(10, 60)
+        self.value_proba = QtWidgets.QLineEdit(self)
+        self.value_proba.setText(str(Globals.proba_repro))
+        self.value_proba.move(int(0.40*Globals.ctrl_size[0]), 75)
+        self.value_proba.resize(45,20)
+
         self.data = None
 
         with open('info_sim.txt', 'r') as f:
@@ -117,7 +124,7 @@ class ControlPanel(QtWidgets.QWidget):
         except FileExistsError:
             pass
         with open(f'Simulation_{self.nb_sim}/Config_sim{self.nb_sim}.txt', 'w') as f:
-            text = f'nbHosts = {int(self.nb_hosts.text())}'
+            text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}'
             f.write(text)
         self.data = pd.DataFrame.from_dict(self._physics.stats_hosts)
         self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
