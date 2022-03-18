@@ -66,13 +66,13 @@ class Physics(QtWidgets.QGraphicsRectItem):
         return Disease(QtGui.QColor.fromRgbF(r,g,b), virulence, duration, ID)
     
     def make_host_sick(self, n):
-        list_h = self.hosts
-        for i in range(n):
+        list_h = self.hosts.copy()
+        for j in range(n):
             ID = random.choice(list_h).ID
             for i, guy in enumerate(self.hosts):
                     if guy.ID == ID:
-                        self.hosts[i].infected == True
-                        self.hosts[i].disease = self.create_disease_rnd(guy.ID)
+                        self.hosts[i].infected = True
+                        self.hosts[i].disease = self.create_disease_rnd(j)
                         list_h.remove(self.hosts[i])
 
     def remove_host(self):
@@ -90,7 +90,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
             a.detection(self)
             a.infection(self)
             baby_list.append(a.reproduction(self))
-            # assert a.infected == False
+           # assert a.disease is None
             if a.timer > 0:
                 a.timer -= 1
 

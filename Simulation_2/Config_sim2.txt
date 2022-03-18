@@ -1,0 +1,3 @@
+nbHosts = 15
+proba_repro = 0.3
+virulence = 0.3

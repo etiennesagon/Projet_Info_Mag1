@@ -68,7 +68,7 @@ class Host(QtWidgets.QGraphicsItem):
             painter.setPen(self.color)
             painter.drawRect(Host.bounds)
         if self.infected:
-            painter.setPen(Qcolor.black)
+            painter.setPen(QtGui.QColor.fromRgb(0,0,0))
             painter.drawRect(Host.bounds)
     
     def boundingRect(self):
@@ -136,15 +136,17 @@ class Host(QtWidgets.QGraphicsItem):
 # (pour durer au minimum 100 pas de temps) 
 
     def infection(self, physics):
-
         if self.infected and len(self.neighbors)>0:
+            print("infection 1")
             for neighbor in self.neighbors:
                 if not neighbor.infected:
                     p = random.uniform(0,1)
+                    print(neighbor.susceptibility(self.disease)*self.disease.virulence)
                     if p < neighbor.susceptibility(self.disease)*self.disease.virulence:
+                        print('infection')
                         ID = neighbor.ID
                         for i, guy in enumerate(physics.hosts):
-                            if guy.ID == partner.ID:
+                            if guy.ID == ID:
                                 physics.hosts[i].infected = True
                                 physics.hosts[i].disease = self.disease
 
