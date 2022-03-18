@@ -85,11 +85,18 @@ class ControlPanel(QtWidgets.QWidget):
         self.value_proba.resize(45,20)
 
         self.lbl_viru = QtWidgets.QLabel(self, text="Virulence rate\n(between 0 and 1): ")
-        self.lbl_viru.move(10, 90)
+        self.lbl_viru.move(10, 95)
         self.value_viru = QtWidgets.QLineEdit(self)
         self.value_viru.setText(str(Globals.virulence))
-        self.value_viru.move(int(0.40*Globals.ctrl_size[0]), 100)
+        self.value_viru.move(int(0.40*Globals.ctrl_size[0]), 105)
         self.value_viru.resize(45,20)
+
+        self.lbl_dis = QtWidgets.QLabel(self, text="Number of diseases: ")
+        self.lbl_dis.move(10, 130)
+        self.nb_dis = QtWidgets.QLineEdit(self)
+        self.nb_dis.setText(str(Globals.nb_infect))
+        self.nb_dis.move(int(0.40*Globals.ctrl_size[0]), 135)
+        self.nb_dis.resize(45,20)
 
         self.data = None
 
@@ -103,12 +110,13 @@ class ControlPanel(QtWidgets.QWidget):
         self._q_timer.stop()
 
     def play(self):
-        self._q_timer.start(1000//25)
+        self._q_timer.start(1000//50)
 
     def change_values(self):
         Globals.nbHosts = int(self.nb_hosts.text())
         Globals.proba_repro = float(self.value_proba.text())
         Globals.virulence = float(self.value_viru.text())
+        Globals.nb_infect = int(self.nb_dis.text())
 
     def start_sim(self):
         self._physics.stats_hosts = {
@@ -133,7 +141,7 @@ class ControlPanel(QtWidgets.QWidget):
             text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}'
             f.write(text)
 
-        self._q_timer.start(1000//25)
+        self._q_timer.start(1000//50)
         self._view.show()
     
     def exp_data(self):
@@ -143,8 +151,9 @@ class ControlPanel(QtWidgets.QWidget):
     def plot_data(self):
         if self.data is not None:
             plt.figure(figsize=(12,6))
-            plt.plot(self.data.index, self.data['nb_alive'])
+            plt.plot(self.data.index, self.data['nb_alive'], c='blue')
+            plt.plot(self.data.index, self.data['nb_infected'], c='red')
             plt.xlabel('Time')
-            plt.ylabel('Number of hosts')
+            plt.ylabel('Number of individuals')
             plt.title('Evolution of the system')
             plt.show()

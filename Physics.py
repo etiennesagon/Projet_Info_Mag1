@@ -71,8 +71,10 @@ class Physics(QtWidgets.QGraphicsRectItem):
             ID = random.choice(list_h).ID
             for i, guy in enumerate(self.hosts):
                     if guy.ID == ID:
+                        d = self.create_disease_rnd(j)
                         self.hosts[i].infected = True
-                        self.hosts[i].disease = self.create_disease_rnd(j)
+                        self.hosts[i].disease = d
+                        self.hosts[i].time_before_recovery = d.duration
                         list_h.remove(self.hosts[i])
 
     def remove_host(self):
@@ -86,18 +88,31 @@ class Physics(QtWidgets.QGraphicsRectItem):
     def step(self):
         baby_list =[]
         for a in self.hosts:
+            # if infected: mutation, decrease recovery time
+            if a.infected:
+                a.disease.mutation()
+                if a.time_before_recovery > 0:
+                    a.time_before_recovery -= 1
+                else:
+                    a.infected = False
+                    a.disease = None
+            
             a.move()
             a.detection(self)
             a.infection(self)
             baby_list.append(a.reproduction(self))
-           # assert a.disease is None
+
             if a.timer > 0:
                 a.timer -= 1
+
+        
 
         for i in baby_list :
             if i is not None :
                 self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
-            
+
+        
+
         # Update stats:
         self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
         self.stats_hosts['nb_alive'].append(len(self.hosts))

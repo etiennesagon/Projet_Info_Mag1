@@ -29,6 +29,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.timer = timer
         self.ID = ID
         self.disease = None
+        self.time_before_recovery = 0
         
     def move(self):
         a = self.rotation()
@@ -137,18 +138,16 @@ class Host(QtWidgets.QGraphicsItem):
 
     def infection(self, physics):
         if self.infected and len(self.neighbors)>0:
-            print("infection 1")
             for neighbor in self.neighbors:
                 if not neighbor.infected:
                     p = random.uniform(0,1)
-                    print(neighbor.susceptibility(self.disease)*self.disease.virulence)
                     if p < neighbor.susceptibility(self.disease)*self.disease.virulence:
-                        print('infection')
                         ID = neighbor.ID
                         for i, guy in enumerate(physics.hosts):
                             if guy.ID == ID:
                                 physics.hosts[i].infected = True
                                 physics.hosts[i].disease = self.disease
+                                physics.hosts[i].time_before_recovery = self.disease.duration
 
 
 

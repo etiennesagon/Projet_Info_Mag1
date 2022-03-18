@@ -10,14 +10,14 @@ hostsLength = 15
 
 ctrl_size = (500,height-150) # panel control size
 
-environmentSize = 850
+environmentSize = 600
 
-nbHosts = 45
-proba_repro = 0.3
+nbHosts = 10
+proba_repro = 0.5
 
 MaxnbHosts = 150 
 
 min_dist = 10
 
-virulence = 0.3
-nb_infect = 5
+virulence = 0.1
+nb_infect = 1

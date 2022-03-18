@@ -1,4 +1,5 @@
 from PyQt5.QtGui import QColor
+import random
 
 class Disease() :
     def __init__(self, color, virulence, duration, ID):
@@ -8,7 +9,7 @@ class Disease() :
         self.ID = ID
     
     def mutation(self):
-        delta_list = [random.uniform(-0.01,0.01) for _ in range(5)]
+        delta = [random.uniform(-0.01,0.01) for _ in range(5)]
         # mutations are random
         red = self.color.redF() + delta[0]
         green = self.color.greenF() + delta[1]
