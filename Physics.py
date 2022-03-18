@@ -64,15 +64,21 @@ class Physics(QtWidgets.QGraphicsRectItem):
     def __in_bounds(self, i, j):
         return 0 <= i < self.size and 0 <= j < self.size
 
-    def step(self):
+        def step(self):
+        baby_list =[]
         for a in self.hosts:
             a.move()
             a.detection(self)
-            a.reproduction(self)
+
+            baby_list.append(a.reproduction(self))
+
             if a.timer > 0:
                 a.timer -= 1
             # TODO:
-            # a.infection() 
+            # a.infection()
+        for i in baby_list :
+            if i is not None :
+                self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
             
         # Update stats:
         self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
