@@ -63,13 +63,13 @@ class Host(QtWidgets.QGraphicsItem):
             return True
 
     def paint(self, painter, option, widget=None): 
-        
+        painter.setPen(self.color)
         if not self.infected:
-            painter.setPen(self.color)
+            
             painter.drawRect(Host.bounds)
         if self.infected:
-            painter.setPen(QtGui.QColor.fromRgb(0,0,0))
-            painter.drawRect(Host.bounds)
+            #painter.setPen(QtGui.QColor.fromRgb(0,0,0))
+            painter.fillRect(Host.bounds, self.color)
     
     def boundingRect(self):
         return Host.bounds
