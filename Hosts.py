@@ -18,7 +18,7 @@ class Host(QtWidgets.QGraphicsItem):
     width = 2*length/9
     bounds = QtCore.QRectF(-.5*length, -.5*width, length, width)
     
-    def __init__(self, color, health, infected, x, y, a, timer, ID):
+    def __init__(self, color, health, infected, x, y, a, timer, ID, life_exp):
         super().__init__()
         self.color = color
         self.health = health
@@ -30,6 +30,7 @@ class Host(QtWidgets.QGraphicsItem):
         self.ID = ID
         self.disease = None
         self.time_before_recovery = 0
+        self.life_expectancy = life_exp
         
     def move(self):
         a = self.rotation()
@@ -109,7 +110,7 @@ class Host(QtWidgets.QGraphicsItem):
                                                         x_mean, 
                                                         y_mean, 
                                                         random.uniform(0, 360), 500, 
-                                                        len(physics.hosts) + 1)
+                                                        len(physics.hosts) + 1, random.randint(1000, 1500))
                
                 self.timer = 100
                 for i, guy in enumerate(physics.hosts):
@@ -148,6 +149,12 @@ class Host(QtWidgets.QGraphicsItem):
                                 physics.hosts[i].infected = True
                                 physics.hosts[i].disease = self.disease
                                 physics.hosts[i].time_before_recovery = self.disease.duration
+
+    def affect_health(self):
+        if self.infected:
+            self.health -= self.disease.virulence*1/self.health*self.susceptibility(self.disease)
+        else:
+            self.health += 0.01
 
 
 

@@ -12,12 +12,12 @@ ctrl_size = (500,height-150) # panel control size
 
 environmentSize = 600
 
-nbHosts = 10
-proba_repro = 0.5
+nbHosts = 40
+proba_repro = 0.8
 
-MaxnbHosts = 150 
+MaxnbHosts = 100 
 
 min_dist = 10
 
-virulence = 0.1
-nb_infect = 1
+virulence = 0.7
+nb_infect = 6

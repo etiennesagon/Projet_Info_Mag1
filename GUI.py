@@ -138,7 +138,7 @@ class ControlPanel(QtWidgets.QWidget):
         except FileExistsError:
             pass
         with open(f'Simulation_{self.nb_sim}/Config_sim{self.nb_sim}.txt', 'w') as f:
-            text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}'
+            text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}\nnb_disease = {self.nb_dis.text()}'
             f.write(text)
 
         self._q_timer.start(1000//50)

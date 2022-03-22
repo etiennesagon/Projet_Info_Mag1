@@ -40,10 +40,10 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene.addItem(self)
         al = .5 * Host.length
         self.scene.setSceneRect(Physics.bounds.adjusted(-al, -al, al, al))
-        self.scene.setBackgroundBrush(QtGui.QColor(0,30,75))
+        self.scene.setBackgroundBrush(QtGui.QColor(255,255,255))
     
-    def add_host(self, c, h, inf, x, y, a, timer, ID):
-        host = Host(c, h, inf, x, y, a, timer, ID)
+    def add_host(self, c, h, inf, x, y, a, timer, ID, life_exp):
+        host = Host(c, h, inf, x, y, a, timer, ID, life_exp)
         self.hosts.append(host)
         self.scene.addItem(host)
 
@@ -53,16 +53,17 @@ class Physics(QtWidgets.QGraphicsRectItem):
         b = random.uniform(-self.extent, self.extent)
         a2 = random.uniform(0, 360)
         color = QtGui.QColor.fromRgbF(random.random(),random.random(),random.random())
-        health = random.random()
+        health = random.uniform(0.7, 1)
         infected = False
-        self.add_host(color, health, infected, a, b, a2, 0, ID)
+        life_exp = random.randint(1000, 1500)
+        self.add_host(color, health, infected, a, b, a2, 0, ID, life_exp)
 
     def create_disease_rnd(self, ID):
         r = random.uniform(0,1)
         g = random.uniform(0,1)
         b = random.uniform(0,1)
         virulence = Globals.virulence
-        duration = random.randint(100,1000)
+        duration = random.randint(100,300)
         return Disease(QtGui.QColor.fromRgbF(r,g,b), virulence, duration, ID)
     
     def make_host_sick(self, n):
@@ -87,7 +88,12 @@ class Physics(QtWidgets.QGraphicsRectItem):
 
     def step(self):
         baby_list =[]
+        dead_list = []
         for a in self.hosts:
+            if a.life_expectancy > 0:
+                a.life_expectancy -= 1
+            else:
+                dead_list.append(a)
             # if infected: mutation, decrease recovery time
             if a.infected:
                 a.disease.mutation()
@@ -105,14 +111,14 @@ class Physics(QtWidgets.QGraphicsRectItem):
             if a.timer > 0:
                 a.timer -= 1
 
-        
-
         for i in baby_list :
             if i is not None :
-                self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
+                self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
+        for host in dead_list:
+            self.hosts.remove(host)
+            self.scene.removeItem(host)
 
         
-
         # Update stats:
         self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
         self.stats_hosts['nb_alive'].append(len(self.hosts))
