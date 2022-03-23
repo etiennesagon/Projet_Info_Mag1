@@ -1,4 +1,0 @@
-nbHosts = 100
-proba_repro = 0.5
-virulence = 0.56
-nb_disease = 10

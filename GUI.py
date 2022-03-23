@@ -119,11 +119,16 @@ class ControlPanel(QtWidgets.QWidget):
         Globals.nb_infect = int(self.nb_dis.text())
 
     def start_sim(self):
-        self._physics.stats_hosts = {
-            'nb_alive':[], 
-            'nb_infected':[], 
-            'nb_healthy':[] 
-            }
+        self._physics.stats = {
+                 'nb_alive':[], 
+                 'nb_infected':[], 
+                 'nb_healthy':[],
+                 'r':[], 
+                 'g':[], 
+                 'b':[], 
+                 'v':[], 
+                 'd':[]
+                 }
         while len(self._physics.hosts) > 0: # clear all previous hosts before starting a new sim
             self._physics.remove_host()
         for ID in range(Globals.nbHosts):
@@ -145,15 +150,25 @@ class ControlPanel(QtWidgets.QWidget):
         self._view.show()
     
     def exp_data(self):
-        self.data = pd.DataFrame.from_dict(self._physics.stats_hosts)
+        self.data = pd.DataFrame.from_dict(self._physics.stats)
         self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
 
     def plot_data(self):
         if self.data is not None:
             plt.figure(figsize=(12,6))
-            plt.plot(self.data.index, self.data['nb_alive'], c='blue')
-            plt.plot(self.data.index, self.data['nb_infected'], c='red')
+            plt.plot(self.data.index, self.data['nb_alive'], c='blue', label='Alive')
+            plt.plot(self.data.index, self.data['nb_infected'], c='red', label='Infected')
+            plt.plot(self.data.index, self.data['nb_healthy'], c='green', label='Sane')
             plt.xlabel('Time')
             plt.ylabel('Number of individuals')
             plt.title('Evolution of the system')
+            plt.legend()
+            plt.show()
+
+            plt.figure(figsize=(12,6))
+            for x, y in zip(self.data.index, self.data['v']):
+                plt.scatter([x]*len(y), y, c='black', s=1)
+            plt.title('Virulence')
+            plt.ylabel('Values')
+            plt.xlabel('Time')
             plt.show()

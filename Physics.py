@@ -24,10 +24,6 @@ class Physics(QtWidgets.QGraphicsRectItem):
     size = Globals.environmentSize
     extent = size / 2
     bounds = QtCore.QRectF(-extent, -extent, size, size)
-    var_stats_hosts = {'nb_alive':[], 
-                 'nb_infected':[], 
-                 'nb_healthy':[] 
-                 }
 
     def __init__(self):
         super().__init__(self.bounds)
@@ -35,7 +31,15 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
         self.hosts = []
-        self.stats_hosts = Physics.var_stats_hosts
+        self.stats = {'nb_alive':[], 
+                 'nb_infected':[], 
+                 'nb_healthy':[],
+                 'r':[], 
+                 'g':[], 
+                 'b':[], 
+                 'v':[], 
+                 'd':[]
+                 }
 
         self.scene.addItem(self)
         al = .5 * Host.length
@@ -59,11 +63,11 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.add_host(color, health, infected, a, b, a2, 0, ID, life_exp)
 
     def create_disease_rnd(self, ID):
-        r = random.uniform(0,1)
-        g = random.uniform(0,1)
-        b = random.uniform(0,1)
+        r = random.random()
+        g = random.random()
+        b = random.random()
         virulence = Globals.virulence
-        duration = random.randint(100,300)
+        duration = random.randint(100,500)
         return Disease(QtGui.QColor.fromRgbF(r,g,b), virulence, duration, ID)
     
     def make_host_sick(self, n):
@@ -96,13 +100,14 @@ class Physics(QtWidgets.QGraphicsRectItem):
                 dead_list.append(a)
             # if infected: mutation, decrease recovery time
             if a.infected:
+                print(a.disease.color.redF())
                 a.disease.mutation()
                 if a.time_before_recovery > 0:
                     a.time_before_recovery -= 1
                 else:
                     a.infected = False
                     a.disease = None
-            
+                
             a.move()
             a.detection(self)
             a.infection(self)
@@ -120,7 +125,13 @@ class Physics(QtWidgets.QGraphicsRectItem):
 
         
         # Update stats:
-        self.stats_hosts['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
-        self.stats_hosts['nb_alive'].append(len(self.hosts))
-        self.stats_hosts['nb_healthy'].append(self.stats_hosts['nb_alive'][-1] - self.stats_hosts['nb_infected'][-1])
+        self.stats['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
+        self.stats['nb_alive'].append(len(self.hosts))
+        self.stats['nb_healthy'].append(self.stats['nb_alive'][-1] - self.stats['nb_infected'][-1])
+
+        self.stats['r'].append([h.disease.color.redF() for h in self.hosts if h.infected==True])
+        self.stats['g'].append([h.disease.color.greenF() for h in self.hosts if h.infected==True])
+        self.stats['b'].append([h.disease.color.blueF() for h in self.hosts if h.infected==True])
+        self.stats['v'].append([h.disease.virulence for h in self.hosts if h.infected==True])
+        self.stats['d'].append([h.disease.duration for h in self.hosts if h.infected==True])
             

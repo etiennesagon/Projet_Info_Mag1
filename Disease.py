@@ -14,9 +14,14 @@ class Disease() :
         red = self.color.redF() + delta[0]
         green = self.color.greenF() + delta[1]
         blue = self.color.blueF() + delta[2]
-        self.color = QColor.fromRgb(red, green, blue)
-        self.virulence += delta[3]
-        self.duration += delta[4]
+        if (red >= 0 and red <= 1) and (green >= 0 and green <= 1) and (blue >= 0 and blue <= 1):
+            self.color = QColor.fromRgb(red, green, blue)
+        virulence = self.virulence + delta[3]
+        if virulence >= 0 and virulence <= 1:
+            self.virulence = virulence
+        duration = self.duration + delta[4]
+        if duration >= 0:
+            self.duration = duration
 
 
 
