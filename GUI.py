@@ -172,3 +172,11 @@ class ControlPanel(QtWidgets.QWidget):
             plt.ylabel('Values')
             plt.xlabel('Time')
             plt.show()
+
+            plt.figure(figsize=(12,6))
+            for x, y in zip(self.data.index, self.data['d']):
+                plt.scatter([x]*len(y), y, c='black', s=1)
+            plt.title('Duration')
+            plt.ylabel('Values')
+            plt.xlabel('Time')
+            plt.show()
