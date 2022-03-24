@@ -174,7 +174,7 @@ class ControlPanel(QtWidgets.QWidget):
             print('Generating virulence plot...')
             plt.figure(figsize=(9.6, 5.4))
             for x, y in tqdm(zip(self.data.index, self.data['v']), total=len(self.data.index)):
-                plt.scatter([x]*len(y), y, c='black', s=0.1)
+                plt.scatter([x]*len(y), y, c='black', s=0.01)
             plt.title('Virulence')
             plt.ylabel('Values')
             plt.xlabel('Time')
@@ -185,7 +185,7 @@ class ControlPanel(QtWidgets.QWidget):
             print('Generating duration plot...')
             plt.figure(figsize=(9.6, 5.4))
             for x, y in tqdm(zip(self.data.index, self.data['d']), total=len(self.data.index)):
-                plt.scatter([x]*len(y), y, c='black', s=0.1)
+                plt.scatter([x]*len(y), y, c='black', s=0.01)
             plt.title('Duration')
             plt.ylabel('Values')
             plt.xlabel('Time')
@@ -196,7 +196,7 @@ class ControlPanel(QtWidgets.QWidget):
             print('Generating red component plot...')
             plt.figure(figsize=(9.6, 5.4))
             for x, y in tqdm(zip(self.data.index, self.data['r']), total=len(self.data.index)):
-                plt.scatter([x]*len(y), y, c='black', s=0.1)
+                plt.scatter([x]*len(y), y, c='black', s=0.01)
             plt.title('Red')
             plt.ylabel('Values')
             plt.xlabel('Time')
@@ -207,7 +207,7 @@ class ControlPanel(QtWidgets.QWidget):
             print('Generating green component plot...')
             plt.figure(figsize=(9.6, 5.4))
             for x, y in tqdm(zip(self.data.index, self.data['g']), total=len(self.data.index)):
-                plt.scatter([x]*len(y), y, c='black', s=0.1)
+                plt.scatter([x]*len(y), y, c='black', s=0.01)
             plt.title('Green')
             plt.ylabel('Values')
             plt.xlabel('Time')
@@ -218,7 +218,7 @@ class ControlPanel(QtWidgets.QWidget):
             print('Generating blue component plot...')
             plt.figure(figsize=(9.6, 5.4))
             for x, y in tqdm(zip(self.data.index, self.data['b']), total=len(self.data.index)):
-                plt.scatter([x]*len(y), y, c='black', s=0.1)
+                plt.scatter([x]*len(y), y, c='black', s=0.01)
             plt.title('Blue')
             plt.ylabel('Values')
             plt.xlabel('Time')

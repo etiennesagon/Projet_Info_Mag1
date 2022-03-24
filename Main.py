@@ -9,7 +9,7 @@ import Physics
 import GUI
 
 import random
-random.seed(34533)
+#random.seed(34533)
 
 app = QtWidgets.QApplication([])
 physics = Physics.Physics()

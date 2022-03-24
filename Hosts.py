@@ -153,7 +153,7 @@ class Host(QtWidgets.QGraphicsItem):
 
     def affect_health(self):
         if self.infected:
-            self.health -= self.disease.virulence*1/self.health*self.susceptibility(self.disease)
+            self.health -= (1/50)*self.disease.virulence*1/self.health*self.susceptibility(self.disease) # coef to adjust
         else:
             if self.health + 0.01 < 1:
                 self.health += 0.01
