@@ -2,6 +2,7 @@ import PyQt5.QtCore as QtCore
 import PyQt5.QtWidgets as QtWidgets
 import PyQt5.QtGui as QtGui
 from PyQt5.QtCore import Qt
+from tqdm import tqdm
 
 import Globals
 import Misc
@@ -134,6 +135,7 @@ class ControlPanel(QtWidgets.QWidget):
         for ID in range(Globals.nbHosts):
             self._physics.add_host_rnd(ID)
         self._physics.make_host_sick(Globals.nb_infect)
+
         self.nb_sim += 1
         with open('info_sim.txt', 'w') as f:
             f.write(f'nb_sim = {self.nb_sim}')
@@ -152,10 +154,12 @@ class ControlPanel(QtWidgets.QWidget):
     def exp_data(self):
         self.data = pd.DataFrame.from_dict(self._physics.stats)
         self.data.to_csv(f'Simulation_{self.nb_sim}/Data_hosts_sim{self.nb_sim}.csv', index_label='time')
+        print('Data exported')
 
     def plot_data(self):
         if self.data is not None:
-            plt.figure(figsize=(12,6))
+            print('Generating Hosts plot...')
+            plt.figure(figsize=(9.6, 5.4))
             plt.plot(self.data.index, self.data['nb_alive'], c='blue', label='Alive')
             plt.plot(self.data.index, self.data['nb_infected'], c='red', label='Infected')
             plt.plot(self.data.index, self.data['nb_healthy'], c='green', label='Sane')
@@ -163,20 +167,61 @@ class ControlPanel(QtWidgets.QWidget):
             plt.ylabel('Number of individuals')
             plt.title('Evolution of the system')
             plt.legend()
-            plt.show()
+            plt.savefig(f'Simulation_{self.nb_sim}/hosts_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Hosts plot generated')
 
-            plt.figure(figsize=(12,6))
-            for x, y in zip(self.data.index, self.data['v']):
-                plt.scatter([x]*len(y), y, c='black', s=1)
+            print('Generating virulence plot...')
+            plt.figure(figsize=(9.6, 5.4))
+            for x, y in tqdm(zip(self.data.index, self.data['v']), total=len(self.data.index)):
+                plt.scatter([x]*len(y), y, c='black', s=0.1)
             plt.title('Virulence')
             plt.ylabel('Values')
             plt.xlabel('Time')
-            plt.show()
+            plt.savefig(f'Simulation_{self.nb_sim}/virulence_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Virulence plot generated')
 
-            plt.figure(figsize=(12,6))
-            for x, y in zip(self.data.index, self.data['d']):
-                plt.scatter([x]*len(y), y, c='black', s=1)
+            print('Generating duration plot...')
+            plt.figure(figsize=(9.6, 5.4))
+            for x, y in tqdm(zip(self.data.index, self.data['d']), total=len(self.data.index)):
+                plt.scatter([x]*len(y), y, c='black', s=0.1)
             plt.title('Duration')
             plt.ylabel('Values')
             plt.xlabel('Time')
-            plt.show()
+            plt.savefig(f'Simulation_{self.nb_sim}/duration_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Duration plot generated')
+
+            print('Generating red component plot...')
+            plt.figure(figsize=(9.6, 5.4))
+            for x, y in tqdm(zip(self.data.index, self.data['r']), total=len(self.data.index)):
+                plt.scatter([x]*len(y), y, c='black', s=0.1)
+            plt.title('Red')
+            plt.ylabel('Values')
+            plt.xlabel('Time')
+            plt.savefig(f'Simulation_{self.nb_sim}/red_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Red component plot generated')
+
+            print('Generating green component plot...')
+            plt.figure(figsize=(9.6, 5.4))
+            for x, y in tqdm(zip(self.data.index, self.data['g']), total=len(self.data.index)):
+                plt.scatter([x]*len(y), y, c='black', s=0.1)
+            plt.title('Green')
+            plt.ylabel('Values')
+            plt.xlabel('Time')
+            plt.savefig(f'Simulation_{self.nb_sim}/green_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Green component plot generated')
+
+            print('Generating blue component plot...')
+            plt.figure(figsize=(9.6, 5.4))
+            for x, y in tqdm(zip(self.data.index, self.data['b']), total=len(self.data.index)):
+                plt.scatter([x]*len(y), y, c='black', s=0.1)
+            plt.title('Blue')
+            plt.ylabel('Values')
+            plt.xlabel('Time')
+            plt.savefig(f'Simulation_{self.nb_sim}/blue_plot{self.nb_sim}.png', dpi=600)
+            # plt.show()
+            print('Blue component plot generated')

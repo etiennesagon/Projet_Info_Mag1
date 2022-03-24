@@ -5,6 +5,7 @@ import Physics
 import PyQt5.QtWidgets as QtWidgets
 import PyQt5.QtCore as QtCore
 import PyQt5.QtGui as QtGui
+from copy import copy
 
 def toss(x, y):
      flip = random.randint(0, 1)
@@ -66,11 +67,9 @@ class Host(QtWidgets.QGraphicsItem):
 
     def paint(self, painter, option, widget=None): 
         painter.setPen(self.color)
-        if not self.infected:
-            
+        if not self.infected:    
             painter.drawRect(Host.bounds)
         if self.infected:
-            #painter.setPen(QtGui.QColor.fromRgb(0,0,0))
             painter.fillRect(Host.bounds, self.color)
     
     def boundingRect(self):
@@ -126,16 +125,14 @@ class Host(QtWidgets.QGraphicsItem):
         green1 = self.color.greenF()
         blue1 = self.color.blueF()
 
-        red2 = disease.color.redF()
-        green2 = disease.color.greenF()
-        blue2 = disease.color.blueF()
+        red2 = disease.color[0]
+        green2 = disease.color[1]
+        blue2 = disease.color[2]
 
         dist = math.sqrt((red1-red2)**2 + (green1-green2)**2 + (blue1-blue2)**2)
         return (1-dist)/math.sqrt(3) # normalization (divide by dist max)
 
-#TODO:
-# si infecté, la health du host diminue de 0.01 * la virulence de la maladie 
-# (pour durer au minimum 100 pas de temps) 
+
 
     def infection(self, physics):
         if self.infected and len(self.neighbors)>0:
@@ -147,14 +144,19 @@ class Host(QtWidgets.QGraphicsItem):
                         for i, guy in enumerate(physics.hosts):
                             if guy.ID == ID:
                                 physics.hosts[i].infected = True
-                                physics.hosts[i].disease = self.disease
-                                physics.hosts[i].time_before_recovery = self.disease.duration
+                                physics.hosts[i].disease = copy(self.disease)
+                                physics.hosts[i].time_before_recovery = copy(self.disease.duration)
+
+#TODO:
+# si infecté, la health du host diminue de 0.01 * la virulence de la maladie 
+# (pour durer au minimum 100 pas de temps) 
 
     def affect_health(self):
         if self.infected:
             self.health -= self.disease.virulence*1/self.health*self.susceptibility(self.disease)
         else:
-            self.health += 0.01
+            if self.health + 0.01 < 1:
+                self.health += 0.01
 
 
 

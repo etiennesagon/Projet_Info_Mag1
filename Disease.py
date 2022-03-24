@@ -9,17 +9,18 @@ class Disease() :
         self.ID = ID
     
     def mutation(self):
-        delta = [random.uniform(-0.01,0.01) for _ in range(5)]
+        delta = [random.uniform(-0.01,0.01) for _ in range(4)]
         # mutations are random
-        red = self.color.redF() + delta[0]
-        green = self.color.greenF() + delta[1]
-        blue = self.color.blueF() + delta[2]
+        assert self.color[0] != 0
+        red = self.color[0] + delta[0]
+        green = self.color[1] + delta[1]
+        blue = self.color[2] + delta[2]
         if (red >= 0 and red <= 1) and (green >= 0 and green <= 1) and (blue >= 0 and blue <= 1):
-            self.color = QColor.fromRgb(red, green, blue)
+            self.color = [red, green, blue]
         virulence = self.virulence + delta[3]
         if virulence >= 0 and virulence <= 1:
             self.virulence = virulence
-        duration = self.duration + delta[4]
+        duration = self.duration + random.randint(-5,5) #duration is 500 times higher than the other parameters
         if duration >= 0:
             self.duration = duration
 

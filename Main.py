@@ -9,12 +9,11 @@ import Physics
 import GUI
 
 import random
-#random.seed(34533)
+random.seed(34533)
 
 app = QtWidgets.QApplication([])
 physics = Physics.Physics()
 view = Misc.AutoscaledGraphicsView(physics.scene)
-q_timer = QtCore.QTimer()
 q_timer = QtCore.QTimer()
 q_timer.timeout.connect(physics.step)
 view.resize(Globals.width-Globals.ctrl_size[0], Globals.ctrl_size[1])

@@ -3,6 +3,7 @@ import math
 import random
 import numpy as np
 import pandas as pd
+from copy import copy
 
 import PyQt5.QtCore as QtCore
 import PyQt5.QtWidgets as QtWidgets
@@ -68,7 +69,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         b = random.random()
         virulence = Globals.virulence
         duration = random.randint(100,500)
-        return Disease(QtGui.QColor.fromRgbF(r,g,b), virulence, duration, ID)
+        return Disease([r,g,b], virulence, duration, ID)
     
     def make_host_sick(self, n):
         list_h = self.hosts.copy()
@@ -78,8 +79,8 @@ class Physics(QtWidgets.QGraphicsRectItem):
                     if guy.ID == ID:
                         d = self.create_disease_rnd(j)
                         self.hosts[i].infected = True
-                        self.hosts[i].disease = d
-                        self.hosts[i].time_before_recovery = d.duration
+                        self.hosts[i].disease = copy(d)
+                        self.hosts[i].time_before_recovery = copy(d.duration)
                         list_h.remove(self.hosts[i])
 
     def remove_host(self):
@@ -100,14 +101,15 @@ class Physics(QtWidgets.QGraphicsRectItem):
                 dead_list.append(a)
             # if infected: mutation, decrease recovery time
             if a.infected:
-                print(a.disease.color.redF())
                 a.disease.mutation()
                 if a.time_before_recovery > 0:
+                    a.affect_health()
                     a.time_before_recovery -= 1
                 else:
                     a.infected = False
                     a.disease = None
-                
+            if a.health <= 0:
+                dead_list.append(a)
             a.move()
             a.detection(self)
             a.infection(self)
@@ -119,6 +121,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         for i in baby_list :
             if i is not None :
                 self.add_host(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
+            
         for host in dead_list:
             self.hosts.remove(host)
             self.scene.removeItem(host)
@@ -129,9 +132,9 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.stats['nb_alive'].append(len(self.hosts))
         self.stats['nb_healthy'].append(self.stats['nb_alive'][-1] - self.stats['nb_infected'][-1])
 
-        self.stats['r'].append([h.disease.color.redF() for h in self.hosts if h.infected==True])
-        self.stats['g'].append([h.disease.color.greenF() for h in self.hosts if h.infected==True])
-        self.stats['b'].append([h.disease.color.blueF() for h in self.hosts if h.infected==True])
+        self.stats['r'].append([h.disease.color[0] for h in self.hosts if h.infected==True])
+        self.stats['g'].append([h.disease.color[1] for h in self.hosts if h.infected==True])
+        self.stats['b'].append([h.disease.color[2] for h in self.hosts if h.infected==True])
         self.stats['v'].append([h.disease.virulence for h in self.hosts if h.infected==True])
         self.stats['d'].append([h.disease.duration for h in self.hosts if h.infected==True])
             
