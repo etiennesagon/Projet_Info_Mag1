@@ -112,7 +112,7 @@ class ControlPanel(QtWidgets.QWidget):
         print("time step=",self._physics.time)
 
     def play(self):
-        self._q_timer.start(1000//20)
+        self._q_timer.start(1000//40)
 
     def change_values(self):
         Globals.nbHosts = int(self.nb_hosts.text())
@@ -152,7 +152,7 @@ class ControlPanel(QtWidgets.QWidget):
             text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}\nnb_disease = {self.nb_dis.text()}'
             f.write(text)
 
-        self._q_timer.start(1000//20)
+        self._q_timer.start(1000//40)
         self._view.show()
     
     def exp_data(self):
