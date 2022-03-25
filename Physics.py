@@ -32,9 +32,13 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.setItemIndexMethod(self.scene.NoIndex)
         self.hosts = []
+        self.time = 0
         self.stats = {'nb_alive':[], 
                  'nb_infected':[], 
                  'nb_healthy':[],
+                 'r_hosts':[],
+                 'g_hosts':[],
+                 'b_hosts':[],
                  'r':[], 
                  'g':[], 
                  'b':[], 
@@ -92,6 +96,7 @@ class Physics(QtWidgets.QGraphicsRectItem):
         return 0 <= i < self.size and 0 <= j < self.size
 
     def step(self):
+        self.time += 1
         baby_list =[]
         dead_list = []
         for a in self.hosts:
@@ -131,6 +136,10 @@ class Physics(QtWidgets.QGraphicsRectItem):
         self.stats['nb_infected'].append(sum([1 for a in self.hosts if a.infected==True]))
         self.stats['nb_alive'].append(len(self.hosts))
         self.stats['nb_healthy'].append(self.stats['nb_alive'][-1] - self.stats['nb_infected'][-1])
+
+        self.stats['r_hosts'].append([h.color.redF() for h in self.hosts])
+        self.stats['g_hosts'].append([h.color.greenF() for h in self.hosts])
+        self.stats['b_hosts'].append([h.color.blueF() for h in self.hosts])
 
         self.stats['r'].append([h.disease.color[0] for h in self.hosts if h.infected==True])
         self.stats['g'].append([h.disease.color[1] for h in self.hosts if h.infected==True])

@@ -109,9 +109,10 @@ class ControlPanel(QtWidgets.QWidget):
 
     def pause(self):
         self._q_timer.stop()
+        print("time step=",self._physics.time)
 
     def play(self):
-        self._q_timer.start(1000//50)
+        self._q_timer.start(1000//20)
 
     def change_values(self):
         Globals.nbHosts = int(self.nb_hosts.text())
@@ -124,6 +125,9 @@ class ControlPanel(QtWidgets.QWidget):
                  'nb_alive':[], 
                  'nb_infected':[], 
                  'nb_healthy':[],
+                 'r_hosts':[],
+                 'g_hosts':[],
+                 'b_hosts':[],
                  'r':[], 
                  'g':[], 
                  'b':[], 
@@ -148,7 +152,7 @@ class ControlPanel(QtWidgets.QWidget):
             text = f'nbHosts = {int(self.nb_hosts.text())}\nproba_repro = {self.value_proba.text()}\nvirulence = {self.value_viru.text()}\nnb_disease = {self.nb_dis.text()}'
             f.write(text)
 
-        self._q_timer.start(1000//50)
+        self._q_timer.start(1000//20)
         self._view.show()
     
     def exp_data(self):
